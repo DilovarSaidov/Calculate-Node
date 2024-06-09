@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Консольный калькулятор</title>
+  </head>
+  <body>
+    <h1>Консольный калькулятор</h1>
+    <form id="calculatorForm">
+      <label for="expression">Введите математическое выражение:</label>
+      <input type="text" id="expression" name="expression" required />
+      <button type="button" onclick="calculateExpression()">Вычислить</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      function calculateExpression() {
+        const expression = document.getElementById("expression").value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:3000/calculate", true);
+        xhr.setRequestHeader(
+          "Content-type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("result").innerText = `${xhr.responseText}`;
+          }
+        };
+
+        xhr.send("expression=" + encodeURIComponent(expression));
+      }
+    </script>
+  </body>
+</html>
